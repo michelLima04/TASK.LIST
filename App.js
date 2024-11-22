@@ -1,6 +1,8 @@
 import { StatusBar } from 'expo-status-bar';
+import { Import } from 'lucide-react-native';
 import { StyleSheet, Text, View } from 'react-native';
 import { Button, TextInput } from 'react-native-web';
+import TaskCard from './TaskCard';
 
 export default function App() {
   return (
@@ -22,10 +24,20 @@ export default function App() {
           color= 'darkgreen'
           onPress={
             () => {
-              alert('CHEL!!!')
+              alert('Testado!!!')
             }
           } />
       </View>
+  
+      <TaskCard 
+        title={"Teste"} 
+        desc={"Descrição Teste"}
+        status={"Done"}
+        onClick={()=>{
+           alert("Deletar")
+        }}>
+        </TaskCard>
+
     </View>
   );
 }
