@@ -2,7 +2,8 @@ import { StatusBar } from 'expo-status-bar';
 import { Import } from 'lucide-react-native';
 import {ScrollView, StyleSheet, Text, View, Button, TextInput } from 'react-native';
 import TaskCard from './TaskCard';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { getRequest } from './assets/api/Api';
 
 
 
@@ -55,7 +56,20 @@ export default function App() {
     const updateTasks = [...task];
     updateTasks.splice(index, 1)
     setTask(updateTasks);
-  }
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try{
+        const resp = await getRequest();
+        setTask(resp)
+      } catch(ex){
+        console.error(ex)
+      }
+    };
+
+    fetchData();
+  }, [])
 
   return (
     <View style={styles.container}>
@@ -112,7 +126,7 @@ export default function App() {
       
        <TaskCard
         title={item.title}
-        description ={item.description}
+        desc ={item.description}
         status={"Done"}
         onClick={() => {
           deleteTask(index);
