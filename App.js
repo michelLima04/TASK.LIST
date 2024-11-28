@@ -3,7 +3,7 @@ import { Import } from 'lucide-react-native';
 import {ScrollView, StyleSheet, Text, View, Button, TextInput } from 'react-native';
 import TaskCard from './TaskCard';
 import { useState, useEffect } from 'react';
-import { getRequest } from './assets/api/Api';
+import { getRequest, postRequest, deleteRequest } from './assets/api/Api';
 
 
 
@@ -15,12 +15,15 @@ export default function App() {
   const [alert1, setAlert1] = useState(false);
   const [alert2, setAlert2] = useState(false);
 
-  const onMessage = () => {
+  const onMessage = async () => {
 
     setAlert1(false);
     setAlert2(false);
 
     if (taskTitle !== "" && taskDescription.length >= 10) {
+
+      let newTask = await (postRequest, taskDescription);
+      setTask(newTask);
 
       setTask([
         ...task,
@@ -52,9 +55,10 @@ export default function App() {
 
   };
 
-  const deleteTask = (index) =>{
+  const deleteTask = (index, id) =>{
     const updateTasks = [...task];
     updateTasks.splice(index, 1)
+    deleteRequest(id);
     setTask(updateTasks);
   };
 
@@ -125,11 +129,13 @@ export default function App() {
        {task.map((item, index) => (
       
        <TaskCard
+        key={item.id}
         title={item.title}
         desc ={item.description}
         status={"Done"}
         onClick={() => {
-          deleteTask(index);
+          deleteTask(index, item.id);
+
         }}
         />
       ))}
